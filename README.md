@@ -135,8 +135,13 @@ curl -X POST http://localhost:8000/auth/logout \
 ✅ Secure authentication (JWT / GitHub OAuth)
 ✅ MongoDB storage for searches
 
-![Image](https://github.com/user-attachments/assets/91a5f651-8084-4dd6-8f03-abd253958966)
-![App Demo](https://raw.githubusercontent.com/shivamsingh12-cyber/MERN-OAuth-Project--Image-Search-Multi-Select/main/show_3.gif)
+## 🎥 App Demos  
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/shivamsingh12-cyber/MERN-OAuth-Project--Image-Search-Multi-Select/main/show_1.gif" width="250" />
+  <img src="https://raw.githubusercontent.com/shivamsingh12-cyber/MERN-OAuth-Project--Image-Search-Multi-Select/main/show_2.gif" width="250" />
+  <img src="https://raw.githubusercontent.com/shivamsingh12-cyber/MERN-OAuth-Project--Image-Search-Multi-Select/main/show_3.gif" width="250" />
+</p>
 
 
 
