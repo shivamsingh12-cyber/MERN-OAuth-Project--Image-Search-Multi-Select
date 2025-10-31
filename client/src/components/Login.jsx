@@ -16,6 +16,17 @@ const Login = () => {
             setIsLoading(false)
         }
     }
+    const handleGithubLogin = () => {
+        try {
+             setIsLoading(true);
+             const githubLoginUrl = `${apiUrl}/auth/github`;
+             window.location.href = githubLoginUrl;
+        } catch (error) {
+            console.error('error login with github', error)
+        }finally{
+            setIsLoading(false)
+        }
+    }
 
     const userData = localStorage.getItem('user')
 
@@ -59,6 +70,33 @@ const Login = () => {
                     </div>
                      Sign in with Google
                    </button>
+
+                <button
+  onClick={handleGithubLogin}
+  disabled={isLoading}
+  className="w-full flex items-center justify-center gap-3 px-4 py-2 
+             rounded-lg shadow-md border border-gray-200 
+             bg-gray-900 text-white font-medium text-sm 
+             hover:bg-gray-800 active:scale-95 transition duration-200 
+             disabled:opacity-50"
+>
+  {/* GitHub Icon */}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="w-5 h-5"
+  >
+    <path
+      fillRule="evenodd"
+      d="M12 .5C5.65.5.5 5.65.5 12a11.48 11.48 0 007.85 10.93c.58.1.79-.25.79-.56v-2.02c-3.19.69-3.87-1.54-3.87-1.54-.53-1.34-1.29-1.7-1.29-1.7-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.26 3.4.97.1-.76.4-1.26.73-1.55-2.55-.29-5.23-1.27-5.23-5.65 0-1.25.44-2.27 1.17-3.07-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.14 1.18a10.92 10.92 0 015.72 0c2.18-1.49 3.14-1.18 3.14-1.18.62 1.59.23 2.76.12 3.05.73.8 1.16 1.82 1.16 3.07 0 4.4-2.69 5.35-5.26 5.63.42.36.8 1.09.8 2.21v3.28c0 .32.21.67.8.56A11.48 11.48 0 0023.5 12C23.5 5.65 18.35.5 12 .5z"
+      clipRule="evenodd"
+    />
+  </svg>
+
+  {isLoading ? "Signing in..." : "Sign in with GitHub"}
+</button>
+
                 </div>
 
               </div>
