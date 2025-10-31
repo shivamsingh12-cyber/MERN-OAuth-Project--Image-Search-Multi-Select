@@ -137,11 +137,9 @@ curl -X POST http://localhost:8000/auth/logout \
 
 ## 🎥 App Demos  
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/shivamsingh12-cyber/MERN-OAuth-Project--Image-Search-Multi-Select/main/show_1.gif" width="250" />
-  <img src="https://raw.githubusercontent.com/shivamsingh12-cyber/MERN-OAuth-Project--Image-Search-Multi-Select/main/show_2.gif" width="250" />
-  <img src="https://raw.githubusercontent.com/shivamsingh12-cyber/MERN-OAuth-Project--Image-Search-Multi-Select/main/show_3.gif" width="250" />
-</p>
+![Image](https://github.com/user-attachments/assets/51d9fe33-5838-4990-91a0-30f9212b3d72)
+![Image](https://github.com/user-attachments/assets/c580c3dc-945d-4c9a-83c1-16bf6a447b52)
+![Image](https://github.com/user-attachments/assets/2b250dd2-5e87-44a4-8173-5801e40586cf)
 
 
 
