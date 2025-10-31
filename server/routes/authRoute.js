@@ -11,9 +11,6 @@ router.get('/google/callback',
     authController.googleCallback
 )
 
-
-
-
 router.get('/user',
     passport.authenticate('jwt',{session:false}),
     authController.getUser
@@ -26,6 +23,14 @@ router.get('/github/callback',
   passport.authenticate('github', {session:false}),
     authController.githubCallback
 );
+
+// router.get('/facebook',
+//   passport.authenticate('facebook',{scope: ['user_friends', 'manage_pages'] }));
+
+// router.get('/facebook/callback',
+//   passport.authenticate('facebook',  {session:false}),
+//       authController.facebookCallback
+// );
 
 router.post('/logout', (req,res) => {
     res.clearCookie('token', {httpOnly:true, sameSite:'lax'})

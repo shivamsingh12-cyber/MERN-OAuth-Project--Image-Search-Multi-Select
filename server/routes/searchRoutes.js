@@ -6,7 +6,7 @@ const axios = require("axios");
 // 🔹 POST /api/search — search Unsplash & save term
 // 🔹 GET /api/search?term=nature
 router.post(
-  "/",
+  "/search",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { term } = req.body;
@@ -34,7 +34,24 @@ router.post(
   }
 );
 
-router.get("/top", async (req, res) => {
+// 🔹 GET /api/history — get user's search history
+router.get(
+  "/history",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const searches = await Search.find({ userId: req.user._id })
+        .sort({ timestamp: -1 })
+        .limit(10); // limit recent 10 searches
+      res.json(searches);
+    } catch (error) {
+      console.error("Error fetching history:", error.message);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
+router.get("/top-searches", async (req, res) => {
   try {
     const topSearches = await Search.aggregate([
       { $group: { _id: "$term", count: { $sum: 1 } } },
