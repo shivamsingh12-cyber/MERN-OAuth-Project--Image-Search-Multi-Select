@@ -135,12 +135,7 @@ curl -X POST http://localhost:8000/auth/logout \
 ✅ Secure authentication (JWT / GitHub OAuth)
 ✅ MongoDB storage for searches
 
-![show_1](https://github.com/user-attachments/assets/3ac9f425-0132-4d03-b899-254ba515e17a)
-
-![show_2](https://github.com/user-attachments/assets/31e38821-3386-4047-981b-1cf872c32c26)
-
-![show_3](https://github.com/user-attachments/assets/3c1d0fd5-e2d0-4f9b-8cb4-b43bf9ebb049)
-
+![Image](https://github.com/user-attachments/assets/386ec3a2-8dd6-4c14-ac78-b90615b026f6)
 
 
 
