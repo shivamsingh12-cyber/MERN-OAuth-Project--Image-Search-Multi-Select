@@ -25,39 +25,41 @@ Users can:
 ## 🧩 Folder Structure
 project-root/
 │
-├── client/ # Frontend (React)
-│ ├── src/
-│ │ ├── components/
-│ │ │ └── HomePage.jsx # Main image search dashboard
-      └── LoginPage.jsx # OAuth Login Page
-│ │
-│ │ ├── App.jsx
-│ │ └── main.jsx
-│ ├── package.json
-│ └── vite.config.js
+├── client/                           # Frontend (React + Vite)
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── HomePage.jsx          # Main dashboard for image search, selection & history
+│   │   ├   └── LoginPage.jsx         # GitHub / Google login with JWT handling
+│   │   │   
+│   │   ├── App.jsx                   # Root component with routing
+│   │   └── main.jsx                  # React entry point
+│   │
+│   ├── package.json                  # Frontend dependencies & scripts
+│   └── vite.config.js                # Vite configuration (proxy, env setup)
 │
-├── server/ # Backend (Node.js / Express)
-│ ├── config/
-│ │ ├── db.js # MongoDB connection setup
-│ │ ├── passport.js # Initialize passport strategies
-│ │ └── strategies/
-│ │ ├── jwt.js # JWT strategy for token auth
-│ │ └── github-login.js # GitHub OAuth2 login strategy
-│ │ └── google-login.js # Google OAuth2 login strategy
-│ ├── model/
-│ │ ├── User.js # User schema
-│ │ └── Search.js # Stores search term + userId
-│ │
-│ ├── routes/
-│ │ ├── authRoutes.js # Login / logout / GitHub auth routes
-│ │ └── searchRoutes.js # Search, history, and top searches
-│ │
-│ ├── .env # Environment variables
-│ ├── index.js # Entry point — starts Express server
-│ ├── package.json
-│ └── README.md
+├── server/                           # Backend (Node.js + Express)
+│   ├── config/
+│   │   ├── db.js                     # MongoDB connection setup using Mongoose
+│   │   ├── passport.js               # Passport initialization for OAuth/JWT
+│   │   └── strategies/
+│   │       ├── jwt.js                # JWT strategy (extracts and validates token from cookies)
+│   │       └── github-login.js       # GitHub OAuth2 login strategy
+│   │
+│   ├── model/
+│   │   ├── User.js                   # User schema (GitHubId, email, etc.)
+│   │   └── Search.js                 # Stores user search terms & timestamps
+│   │
+│   ├── routes/
+│   │   ├── authRoutes.js             # Authentication routes (login, logout, GitHub callback)
+│   │   └── searchRoutes.js           # Search APIs (fetch, history, top searches)
+│   │
+│   ├── .env                          # Environment variables (PORT, Mongo URI, OAuth keys)
+│   ├── index.js                      # Express server entry file
+│   ├── package.json                  # Backend dependencies & scripts
+│   └── README.md                     # Backend-specific documentation
 │
-└── README.md # Project documentation (this file)
+└── README.md                         # Main project documentation (setup, usage, API, etc.)
+
 
 
 ---
