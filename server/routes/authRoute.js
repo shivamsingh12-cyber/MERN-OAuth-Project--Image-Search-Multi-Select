@@ -12,10 +12,20 @@ router.get('/google/callback',
 )
 
 
+
+
 router.get('/user',
     passport.authenticate('jwt',{session:false}),
     authController.getUser
 )
+
+router.get('/github',
+  passport.authenticate('github', { scope: [ 'user:email' ] }));
+
+router.get('/github/callback', 
+  passport.authenticate('github', {session:false}),
+    authController.githubCallback
+);
 
 router.post('/logout', (req,res) => {
     res.clearCookie('token', {httpOnly:true, sameSite:'lax'})

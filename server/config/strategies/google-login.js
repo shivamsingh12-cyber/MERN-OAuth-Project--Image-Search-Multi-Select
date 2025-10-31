@@ -8,7 +8,7 @@ module.exports= (passport) => {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: "http://localhost:8000/auth/google/callback"
     }, async(accessToken, refreshToken,profile,done) =>{
-        console.log(profile)
+      
         try {
             const user = await User.findOneAndUpdate({
                 googleId:profile?.id
@@ -19,12 +19,14 @@ module.exports= (passport) => {
                 email:profile.emails[0].value,
                 picture:profile.photos[0].value
             },
+
             {upsert:true,new:true}
         );
         done(null,user)
         } catch (error) {
             done(error,null)
         }
-    }))
+    }
+))
 }
 
