@@ -6,7 +6,7 @@ server/node_modules/
 client/build/
 server/dist/
 
-
+/
 
 # OS system files
 .DS_Store
