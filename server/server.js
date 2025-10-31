@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const authRoute = require('./routes/authRoute')
 
+
+
 //Passport configuration
 require('./config/passport')
 
@@ -24,10 +26,12 @@ app.use(cors({
 app.use(cookiesParser());
 app.use(express.json());
 app.use(passport.initialize())
+const searchRoutes = require("./routes/searchRoutes");
 
 
 //routes
 app.use('/auth',authRoute)
+app.use("/api/search", searchRoutes);
 
 
 const PORT = process.env.PORT || 5000;

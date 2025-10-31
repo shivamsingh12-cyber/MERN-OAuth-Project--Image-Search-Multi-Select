@@ -1,13 +1,33 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React from "react";
+import axios from "axios";
 import { useNavigate } from 'react-router-dom'
 
-const HomePage = () => {
-    const navigate = useNavigate();
-    const [user,setUser] = useState(null);
-    const [loading,setLoading] = useState(true);
-    const apiUrl = import.meta.env.VITE_API_URL;
-    useEffect(() => {
+
+
+const Homepage = () => {
+  const [term, setTerm] = React.useState("");
+    const [user,setUser] = React.useState(null);
+  const [images, setImages] = React.useState([]);
+   const [loading,setLoading] = React.useState(true);
+  const [selectedImages, setSelectedImages] = React.useState([]);
+    const [topSearches, setTopSearches] = React.useState([]);
+     const navigate = useNavigate();
+
+    // Load top searches when page loads
+  React.useEffect(() => {
+    fetchTopSearches();
+  }, []);
+
+  const fetchTopSearches = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/api/search/top");
+      setTopSearches(res.data.top || []);
+    } catch (error) {
+      console.error("Failed to fetch top searches:", error);
+    }
+  };
+
+      React.useEffect(() => {
         const userData = localStorage.getItem('user')
         if(userData){
             setUser(JSON.parse(userData))
@@ -18,6 +38,38 @@ const HomePage = () => {
     },[navigate])
 
 
+// 🔍 Handle image search
+const handleSearch = async (e) => {
+  e.preventDefault();
+
+  if (!term.trim()) {
+    alert("Please enter a search term");
+    return;
+  }
+
+  try {
+        const res = await axios.post(
+      "http://localhost:8000/api/search",
+      { term }, // ✅ send term in body
+      { withCredentials: true } // ✅ send JWT cookie
+    );
+
+    setImages(res.data);
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    alert("Failed to fetch images.");
+  }
+};
+
+
+  // 🖱 Toggle image selection
+  const toggleSelect = (img) => {
+    setSelectedImages((prev) =>
+      prev.includes(img) ? prev.filter((i) => i !== img) : [...prev, img]
+    );
+  };
+
+  // 🚪 Logout
     const handleLogout = async() => {
       try {
               await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`,{} ,{withCredentials:true})
@@ -29,70 +81,122 @@ const HomePage = () => {
 
     }
 
-    console.log(user)
-
-    const formateDate = (date) => {
-        const options = {year: 'numeric', month:'long', day:"numeric"}
-        return new Date(date).toLocaleDateString(undefined,options)
-    }
-
-    if(loading) {
-        return (
-            <div className='min-h-screen flex items-center justify-center'>
-                  <p className='text-white text-xl'>Loading...</p>
-            </div>
-        )
-    }
   return (
-    <div className='min-h-screen'>
-        <header className='bg-white shadow-md'>
-            <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 py-4 flex justify-between items-center'>
-             <h1 className='text-2xl font-bold text-gray-900 '>
-                Dashboard
-             </h1>
-             <button onClick={handleLogout} className='bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition flex items-center gap-2'>
-                Logout
-             </button>
-            </div>
-        </header>
-        <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
-         <div className='bg-white rounded-xl shadow-xl overflow-hidden'>
-             <div className='bg-gradient-to-r from-green-400 to-blue-500 p-8'>
-                       <div className='flex flex-col sm:flex-row items-center'>
-                        <div className='relative w-24 h-24 rounded-full overflow-hidden border-4 border-white'>
-                       <img src={user?.picture} alt={user.name} className='object-cover'/>
-                        </div>
+    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
+      {/* 🔹 Header Section */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <h2>Image Search Dashboard</h2>
+        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+          <strong>Selected: {selectedImages.length}</strong>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      </header>
 
-                        <div className='mt-4 sm:mt-0 sm:ml-6 text-center sm:text-left'>
-                          <h2 className='text-3xl font-bold text-white'>
-                            {user.name}
-                          </h2>
-                          <p className='text-blue-100'>{user.email}</p>
-                        </div>
-                       </div>
-             </div>
-             <div className='p-8'>
-                  <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-                    <div className='bg-gradient-to-br from-pink-100 to-pink-50 p-6 rounded-xl shadow-sm'>
-                     <h3 className='text-xl font-semibold text-pink-800 mb-4'>Account Information</h3>
-                     <div className='space-y-3'>
-                        <div className='flex justify-between'>
-                            <span className='text-gray-600'>Member since</span>
-                            <span className='font-medium'>{formateDate(user.createdAt)}</span>
+        {/* 🔹 Top Searches */}
+      <section style={{ marginBottom: "20px" }}>
+        <h3>🔥 Top Searches</h3>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          {topSearches.length > 0 ? (
+            topSearches.map((item) => (
+              <button
+                key={item.term}
+                onClick={() => setTerm(item.term)}
+                style={{
+                  background: "#eee",
+                  border: "1px solid #ccc",
+                  borderRadius: "6px",
+                  padding: "6px 12px",
+                  cursor: "pointer",
+                }}
+              >
+                {item.term} ({item.count})
+              </button>
+            ))
+          ) : (
+            <p>No top searches yet.</p>
+          )}
+        </div>
+      </section>
 
-                        </div>
+      {/* 🔹 Search Bar */}
+      <form
+        onSubmit={handleSearch}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          marginBottom: "25px",
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Search images..."
+          value={term}
+          onChange={(e) => setTerm(e.target.value)}
+          style={{
+            width: "300px",
+            padding: "8px",
+            fontSize: "16px",
+          }}
+        />
+        <button type="submit" style={{ padding: "8px 16px", fontSize: "16px" }}>
+          Search
+        </button>
+      </form>
 
-                     </div>
-                    </div>
-                    
-
-                  </div>
-             </div>
-         </div>
-        </main> 
-
+      {/* 🔹 Image Grid - 4 columns */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)", // ✅ fixed 4-column layout
+          gap: "15px",
+        }}
+      >
+        {images.length > 0 ? (
+          images.map((img) => {
+            const isSelected = selectedImages.includes(img);
+            return (
+              <div
+                key={img.id}
+                onClick={() => toggleSelect(img)}
+                style={{
+                  border: isSelected ? "4px solid green" : "2px solid #ccc",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  transition: "transform 0.2s ease",
+                }}
+              >
+                <img
+                  src={img.urls.small}
+                  alt={img.alt_description || "image"}
+                  width="100%"
+                  height="250"
+                  style={{
+                    objectFit: "cover",
+                    display: "block",
+                    width: "100%",
+                    height: "250px",
+                  }}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <p style={{ gridColumn: "span 4", textAlign: "center" }}>
+            No images found
+          </p>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default Homepage;
