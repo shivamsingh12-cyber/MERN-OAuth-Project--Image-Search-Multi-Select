@@ -31,7 +31,7 @@ const searchRoutes = require("./routes/searchRoutes");
 
 //routes
 app.use('/auth',authRoute)
-app.use("/api/search", searchRoutes);
+app.use("/api", searchRoutes);
 
 
 const PORT = process.env.PORT || 5000;

@@ -1,66 +1,76 @@
 import React from "react";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom'
-
-
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
   const [term, setTerm] = React.useState("");
-    const [user,setUser] = React.useState(null);
+  const [user, setUser] = React.useState(null);
   const [images, setImages] = React.useState([]);
-   const [loading,setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(true);
   const [selectedImages, setSelectedImages] = React.useState([]);
-    const [topSearches, setTopSearches] = React.useState([]);
-     const navigate = useNavigate();
+  const [topSearches, setTopSearches] = React.useState([]);
+  const navigate = useNavigate();
+  const [history, setHistory] = React.useState([]);
 
-    // Load top searches when page loads
+  // Load top searches when page loads
   React.useEffect(() => {
     fetchTopSearches();
+    fetchHistory();
   }, []);
+
+  const fetchHistory = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/api/history", {
+        withCredentials: true,
+      });
+      setHistory(res.data);
+    } catch (error) {
+      console.error("Failed to load search history:", error);
+    }
+  };
 
   const fetchTopSearches = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/search/top");
+      const res = await axios.get("http://localhost:8000/api/top-searches");
       setTopSearches(res.data.top || []);
     } catch (error) {
       console.error("Failed to fetch top searches:", error);
     }
   };
 
-      React.useEffect(() => {
-        const userData = localStorage.getItem('user')
-        if(userData){
-            setUser(JSON.parse(userData))
-        }else{
-            navigate('/login')
-        }
-        setLoading(false)
-    },[navigate])
+  React.useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    } else {
+      navigate("/login");
+    }
+    setLoading(false);
+  }, [navigate]);
 
+  // 🔍 Handle image search
+  const handleSearch = async (e) => {
+    e.preventDefault();
 
-// 🔍 Handle image search
-const handleSearch = async (e) => {
-  e.preventDefault();
+    if (!term.trim()) {
+      alert("Please enter a search term");
+      return;
+    }
 
-  if (!term.trim()) {
-    alert("Please enter a search term");
-    return;
-  }
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/api/search",
+        { term }, // ✅ send term in body
+        { withCredentials: true } // ✅ send JWT cookie
+      );
 
-  try {
-        const res = await axios.post(
-      "http://localhost:8000/api/search",
-      { term }, // ✅ send term in body
-      { withCredentials: true } // ✅ send JWT cookie
-    );
-
-    setImages(res.data);
-  } catch (error) {
-    console.error("Error fetching images:", error);
-    alert("Failed to fetch images.");
-  }
-};
-
+      setImages(res.data);
+      fetchHistory();
+    } catch (error) {
+      console.error("Error fetching images:", error);
+      alert("Failed to fetch images.");
+    }
+  };
 
   // 🖱 Toggle image selection
   const toggleSelect = (img) => {
@@ -70,16 +80,19 @@ const handleSearch = async (e) => {
   };
 
   // 🚪 Logout
-    const handleLogout = async() => {
-      try {
-              await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`,{} ,{withCredentials:true})
-              localStorage.removeItem('user')
-              navigate('/login')
-      } catch (error) {
-         console.error('Logout error',error)
-      }
-
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/logout`,
+        {},
+        { withCredentials: true }
+      );
+      localStorage.removeItem("user");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error", error);
     }
+  };
 
   return (
     <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
@@ -99,7 +112,7 @@ const handleSearch = async (e) => {
         </div>
       </header>
 
-        {/* 🔹 Top Searches */}
+      {/* 🔹 Top Searches */}
       <section style={{ marginBottom: "20px" }}>
         <h3>🔥 Top Searches</h3>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
@@ -124,6 +137,32 @@ const handleSearch = async (e) => {
           )}
         </div>
       </section>
+
+      {/* 🔹 User Search History */}
+<section style={{ marginBottom: "20px" }}>
+  <h3>🕘 Your Search History</h3>
+  <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+    {history.length > 0 ? (
+      history.map((item) => (
+        <button
+          key={item._id}
+          onClick={() => setTerm(item.term)}
+          style={{
+            background: "#f8f9fa",
+            border: "1px solid #ccc",
+            borderRadius: "6px",
+            padding: "6px 12px",
+            cursor: "pointer",
+          }}
+        >
+          {item.term}
+        </button>
+      ))
+    ) : (
+      <p>No searches yet.</p>
+    )}
+  </div>
+</section>
 
       {/* 🔹 Search Bar */}
       <form
