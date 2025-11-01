@@ -76,7 +76,7 @@ UI_URL=http://localhost:5173
 UNSPLASH_ACCESS_KEY=your_unsplash_access_key
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
-
+```
 ## Setup Instruction
 
 for backend
@@ -86,13 +86,13 @@ cd MERN-OAuth-Project--Image-Search-Multi-Select
 cd server
 npm install
 npm start
-
+```
 for frontend
 ```bash
 cd client
 npm install
 npm run dev
-
+```
 📚 API Endpoints
 Method	             Endpoint	                           Description
 POST	            /api/search	                      Search Unsplash for a term, store in DB
@@ -109,23 +109,23 @@ curl -X POST http://localhost:8000/api/search \
      -H "Content-Type: application/json" \
      -b "token=<your_jwt_token>" \
      -d '{"term": "nature"}'
-
+```
 ```bash
 curl -X GET http://localhost:8000/api/search/history \
      -b "token=<your_jwt_token>"
-
+```
 ```bash
 curl -X GET http://localhost:8000/api/top-searches
-
+```
 ```bash
 curl -X POST http://localhost:8000/auth/login \
      -H "Content-Type: application/json" \
      -d '{"email":"test@example.com","password":"123456"}'
-
+```
 ```bash
 curl -X POST http://localhost:8000/auth/logout \
      -b "token=<your_jwt_token>"
-
+```
 
 
 🖥️ Features
