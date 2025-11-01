@@ -143,7 +143,7 @@ curl -X POST http://localhost:8000/auth/logout \
 ![Image](https://github.com/user-attachments/assets/c580c3dc-945d-4c9a-83c1-16bf6a447b52)
 ![Image](https://github.com/user-attachments/assets/2b250dd2-5e87-44a4-8173-5801e40586cf)
 
-Please see show_1,show_2,show_3 for visual graphics.
+
 
 
 
