@@ -185,7 +185,7 @@ const Homepage = () => {
             fontSize: "16px",
           }}
         />
-        <button type="submit" style={{ padding: "8px 16px", fontSize: "16px" }}>
+        <button type="submit" style={{ padding: "8px 16px", fontSize: "16px",backgroundColor:"red" }}>
           Search
         </button>
       </form>

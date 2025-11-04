@@ -1,0 +1,41 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - image-select
+    restart: unless-stopped
+  
+  backend:
+    buid: 
+     context: ./server
+     dockerfile: Dockerfile
+    image: server:staging
+    container_name: backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=staging
+      - MONGO_URI=mongodb://admin:your_secure_password_here@mongo:27017/mern_auth?authSource=admin
+      - PORT=8000
+      # Add other environment variables as needed
+      - JWT_SECRET=${JWT_SECRET}
+      - API_URL=http://127.0.0.1:8000
+    networks:
+      - image-select
+    restart: unless-stopped
+    volumes:
+     - ./server/logs:/app/logs
+
+  frontend:
+   build:
+    context: ./client
+    dockerfile: Dockerfile
+  image: client:staging
+
+
+    

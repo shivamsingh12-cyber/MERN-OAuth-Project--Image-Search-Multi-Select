@@ -23,6 +23,7 @@ Users can:
 ---
 
 ## 🧩 Folder Structure
+```Tree
 project-root/
 │
 ├── client/                           # Frontend (React + Vite)
@@ -59,7 +60,7 @@ project-root/
 │   └── README.md                     # Backend-specific documentation
 │
 └── README.md                         # Main project documentation (setup, usage, API, etc.)
-
+```
 
 
 ---

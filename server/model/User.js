@@ -2,12 +2,11 @@ const mongoose = require("mongoose");
 
 
 const userSchema = new mongoose.Schema({
-    googleId:{type:String, unique:true},
-    githubId:{type:String, unique:true},
-    facebookId:{type:String, unique:true},
-    name:String,
-    email :{type:String, unique:true},
-    picture:String,
+    googleId: { type: String, unique: true, sparse: true }, // ✅ sparse allows null
+    githubId: { type: String, unique: true, sparse: true }, // ✅ sparse allows null
+    name: String,
+    email :{type:String, unique:true,sparse: true},
+    picture: String,
 
 },{timestamps:true})
 
