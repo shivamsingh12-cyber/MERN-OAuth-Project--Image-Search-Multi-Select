@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   mongo:
     image: mongo:latest
@@ -7,35 +9,35 @@ services:
     networks:
       - image-select
     restart: unless-stopped
-  
+
   backend:
-    buid: 
-     context: ./server
-     dockerfile: Dockerfile
-    image: server:staging
+    image: shivamsingh6490/intern-backend:latest   # ✅ your backend image
     container_name: backend
     ports:
       - "8000:8000"
     depends_on:
       - mongo
-    environment:
-      - NODE_ENV=staging
-      - MONGO_URI=mongodb://admin:your_secure_password_here@mongo:27017/mern_auth?authSource=admin
-      - PORT=8000
-      # Add other environment variables as needed
-      - JWT_SECRET=${JWT_SECRET}
-      - API_URL=http://127.0.0.1:8000
     networks:
       - image-select
     restart: unless-stopped
     volumes:
-     - ./server/logs:/app/logs
+      - ./server/logs:/app/logs
+    env_file:
+      - ./server/.env
 
   frontend:
-   build:
-    context: ./client
-    dockerfile: Dockerfile
-  image: client:staging
+    image: shivamsingh6490/intern-frontend:latest  # ✅ should be your FRONTEND image
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - image-select
+    restart: unless-stopped
+    env_file:
+      - ./client/.env
 
-
-    
+networks:
+  image-select:
+    driver: bridge
