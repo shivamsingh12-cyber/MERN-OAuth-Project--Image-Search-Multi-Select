@@ -71,7 +71,7 @@ Create a `.env` file inside your **server/** folder and add:
 
 ```env
 PORT=8000
-MONGO_URI=mongodb://localhost:27017/image-search
+MONGO_URI=mongodb://mongo:27017/test
 JWT_SECRET=your_super_secret_key
 UI_URL=http://localhost:5173
 UNSPLASH_ACCESS_KEY=your_unsplash_access_key
